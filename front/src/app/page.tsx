@@ -1,5 +1,6 @@
 "use client"
 
+import OrderNew from "@/components/order-new";
 import OrderTable from "@/components/order-table";
 import { Order, StateEnum } from "@/types/order";
 import { useState } from "react";
@@ -32,6 +33,19 @@ export default function Home() {
     }
   ])
 
+  const handleAddOrder = async (name: string) => {
+    const newOrder: Order = {
+      id: Math.max(...orders.map(order => order.id)) + 1,
+      name,
+      state: StateEnum.pending,
+      stateName: "Pending",
+      createdAt: new Date(),
+      updatedAt: undefined
+    }
+
+    setOrders((prev) => [...prev, newOrder])
+  }
+
   const handleUpdateOrderState = async (orderId: number) => {
     setOrders((prev) =>
       prev.map((order) => {
@@ -51,6 +65,10 @@ export default function Home() {
   
   return (
     <div>
+      <OrderNew
+        loading={false}
+        onAddOrder={handleAddOrder}
+      />
       <OrderTable 
           orders={orders} 
           loading={false}
