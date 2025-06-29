@@ -1,43 +1,47 @@
-"use client"
+"use client";
 
-import { Play, CheckCircle, Package, Check } from "lucide-react"
-import { Order, StateEnum } from "@/types/order"
-import { formatDateToBR } from "@/lib/date-utils"
+import { Play, CheckCircle, Package, Check } from "lucide-react";
+import { Order, StateEnum } from "@/types/order";
+import { formatDateToBR } from "@/lib/date-utils";
 
 interface OrderTableProps {
-  orders: Order[]
-  loading: boolean
-  onUpdateOrderState: (orderId: number) => void
+  orders: Order[];
+  loading: boolean;
+  onUpdateOrderState: (orderId: number) => void;
 }
 
-export default function OrderTable({ orders, loading, onUpdateOrderState }: OrderTableProps) {
+export default function OrderTable({
+  orders,
+  loading,
+  onUpdateOrderState,
+}: OrderTableProps) {
   const getStateStyles = (state: StateEnum) => {
     switch (state) {
       case StateEnum.pending:
         return {
           badge: "bg-amber-100 text-amber-800 border border-amber-200",
           dot: "bg-amber-400",
-        }
+        };
       case StateEnum.inProgress:
         return {
           badge: "bg-blue-100 text-blue-800 border border-blue-200",
           dot: "bg-blue-400",
-        }
+        };
       case StateEnum.completed:
         return {
           badge: "bg-emerald-100 text-emerald-800 border border-emerald-200",
           dot: "bg-emerald-400",
-        }
+        };
       default:
         return {
           badge: "bg-gray-100 text-gray-800 border border-gray-200",
           dot: "bg-gray-400",
-        }
+        };
     }
-  }
+  };
 
-  const canStartProgress = (order: Order) => order.state === StateEnum.pending
-  const canComplete = (order: Order) => order.state === StateEnum.inProgress
+  const canStartProgress = (order: Order) => order.state === StateEnum.pending;
+  const canComplete = (order: Order) => order.state === StateEnum.inProgress;
 
   if (loading) {
     return (
@@ -53,13 +57,15 @@ export default function OrderTable({ orders, loading, onUpdateOrderState }: Orde
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200">
       <div className="px-6 py-4 border-b border-slate-200">
-        <h3 className="text-lg font-semibold text-slate-900">Orders ({orders.length})</h3>
+        <h3 className="text-lg font-semibold text-slate-900">
+          Orders ({orders.length})
+        </h3>
       </div>
 
       {orders.length === 0 ? (
@@ -70,17 +76,23 @@ export default function OrderTable({ orders, loading, onUpdateOrderState }: Orde
       ) : (
         <div className="overflow-hidden">
           {orders.map((order, index) => {
-            const styles = getStateStyles(order.state)
+            const styles = getStateStyles(order.state);
             return (
               <div
                 key={order.id}
-                className={`p-6 ${index !== orders.length - 1 ? "border-b border-slate-200" : ""} hover:bg-slate-50 transition-colors`}
+                className={`p-6 ${
+                  index !== orders.length - 1 ? "border-b border-slate-200" : ""
+                } hover:bg-slate-50 transition-colors`}
               >
                 <div className="flex flex-col gap-4 sm:gap-1">
-                  <h4 className="text-lg font-semibold text-slate-900">{order.name}</h4>
+                  <h4 className="text-lg font-semibold text-slate-900">
+                    {order.name}
+                  </h4>
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                     <div className="flex flex-wrap items-center gap-4">
-                      <div className={`w-3 h-3 rounded-full ${styles.dot}`}></div>
+                      <div
+                        className={`w-3 h-3 rounded-full ${styles.dot}`}
+                      ></div>
                       <span
                         className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${styles.badge}`}
                       >
@@ -88,12 +100,14 @@ export default function OrderTable({ orders, loading, onUpdateOrderState }: Orde
                       </span>
                       {order.createdAt && (
                         <span className="text-sm text-slate-500">
-                          Created: {formatDateToBR(order.createdAt.toISOString())}
+                          Created:{" "}
+                          {formatDateToBR(order.createdAt.toISOString())}
                         </span>
                       )}
                       {order.updatedAt && (
                         <span className="text-sm text-slate-500">
-                          Updated: {formatDateToBR(order.updatedAt.toISOString())}
+                          Updated:{" "}
+                          {formatDateToBR(order.updatedAt.toISOString())}
                         </span>
                       )}
                     </div>
@@ -127,11 +141,10 @@ export default function OrderTable({ orders, loading, onUpdateOrderState }: Orde
                   </div>
                 </div>
               </div>
-            )
+            );
           })}
-
         </div>
       )}
     </div>
-  )
+  );
 }

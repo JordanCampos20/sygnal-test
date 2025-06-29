@@ -1,9 +1,9 @@
-import { Clock, TrendingUp, Package } from "lucide-react"
-import { StateEnum, type Order } from "@/types/order"
+import { Clock, TrendingUp, Package } from "lucide-react";
+import { StateEnum, type Order } from "@/types/order";
 
 interface OrderStatsProps {
-  orders: Order[]
-  loading: boolean
+  orders: Order[];
+  loading: boolean;
 }
 
 export default function OrderStats({ orders, loading }: OrderStatsProps) {
@@ -11,13 +11,16 @@ export default function OrderStats({ orders, loading }: OrderStatsProps) {
     pending: orders.filter((o) => o.state === StateEnum.pending).length,
     inProgress: orders.filter((o) => o.state === StateEnum.inProgress).length,
     completed: orders.filter((o) => o.state === StateEnum.completed).length,
-  }
+  };
 
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {[...Array(3)].map((_, i) => (
-          <div key={i} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+          <div
+            key={i}
+            className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
+          >
             <div className="animate-pulse">
               <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
               <div className="h-8 bg-gray-200 rounded mb-2"></div>
@@ -25,7 +28,7 @@ export default function OrderStats({ orders, loading }: OrderStatsProps) {
           </div>
         ))}
       </div>
-    )
+    );
   }
 
   return (
@@ -53,7 +56,9 @@ export default function OrderStats({ orders, loading }: OrderStatsProps) {
           </div>
           <div className="ml-4">
             <p className="text-sm font-medium text-slate-600">In Progress</p>
-            <p className="text-2xl font-bold text-slate-900">{stats.inProgress}</p>
+            <p className="text-2xl font-bold text-slate-900">
+              {stats.inProgress}
+            </p>
           </div>
         </div>
       </div>
@@ -67,10 +72,12 @@ export default function OrderStats({ orders, loading }: OrderStatsProps) {
           </div>
           <div className="ml-4">
             <p className="text-sm font-medium text-slate-600">Completed</p>
-            <p className="text-2xl font-bold text-slate-900">{stats.completed}</p>
+            <p className="text-2xl font-bold text-slate-900">
+              {stats.completed}
+            </p>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

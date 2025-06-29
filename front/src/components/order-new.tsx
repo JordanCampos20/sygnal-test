@@ -1,29 +1,29 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Plus } from "lucide-react"
+import { useState } from "react";
+import { Plus } from "lucide-react";
 
 interface OrderNewProps {
-  loading: boolean
-  onAddOrder: (controlNumber: string) => void
+  loading: boolean;
+  onAddOrder: (controlNumber: string) => void;
 }
 
 export default function OrderNew({ loading, onAddOrder }: OrderNewProps) {
-  const [newControlNumber, setNewControlNumber] = useState("")
+  const [newControlNumber, setNewControlNumber] = useState("");
 
   const handleAddOrder = () => {
-    if (!newControlNumber.trim()) return
-    onAddOrder(newControlNumber.trim())
-    setNewControlNumber("")
-  }
+    if (!newControlNumber.trim()) return;
+    onAddOrder(newControlNumber.trim());
+    setNewControlNumber("");
+  };
 
   const handleKeyUp = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      handleAddOrder()
+      handleAddOrder();
     }
-  }
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
@@ -33,7 +33,10 @@ export default function OrderNew({ loading, onAddOrder }: OrderNewProps) {
       </div>
       <div className="space-y-4">
         <div>
-          <label htmlFor="controlNumber" className="block text-sm font-medium text-slate-700 mb-2">
+          <label
+            htmlFor="controlNumber"
+            className="block text-sm font-medium text-slate-700 mb-2"
+          >
             Control Number
           </label>
           <input
@@ -56,5 +59,5 @@ export default function OrderNew({ loading, onAddOrder }: OrderNewProps) {
         </button>
       </div>
     </div>
-  )
+  );
 }

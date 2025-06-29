@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { Search } from "lucide-react"
-import { StateEnum } from "@/types/order"
+import { Search } from "lucide-react";
+import { StateEnum } from "@/types/order";
 
 interface OrderFilterProps {
-  filterControlNumber: string
-  filterState: StateEnum | "all"
-  loading: boolean
-  onFilterControlNumberChange: (value: string) => void
-  onFilterStateChange: (value: StateEnum | "all") => void
+  filterControlNumber: string;
+  filterState: StateEnum | "all";
+  loading: boolean;
+  onFilterControlNumberChange: (value: string) => void;
+  onFilterStateChange: (value: StateEnum | "all") => void;
 }
 
 export default function OrderFilter({
@@ -26,7 +26,10 @@ export default function OrderFilter({
       </div>
       <div className="space-y-4">
         <div>
-          <label htmlFor="filterControl" className="block text-sm font-medium text-slate-700 mb-2">
+          <label
+            htmlFor="filterControl"
+            className="block text-sm font-medium text-slate-700 mb-2"
+          >
             Control Number
           </label>
           <input
@@ -40,13 +43,18 @@ export default function OrderFilter({
           />
         </div>
         <div>
-          <label htmlFor="filterState" className="block text-sm font-medium text-slate-700 mb-2">
+          <label
+            htmlFor="filterState"
+            className="block text-sm font-medium text-slate-700 mb-2"
+          >
             State
           </label>
           <select
             id="filterState"
             value={filterState}
-            onChange={(e) => onFilterStateChange(e.target.value as StateEnum | "all")}
+            onChange={(e) =>
+              onFilterStateChange(e.target.value as StateEnum | "all")
+            }
             disabled={loading}
             className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
           >
@@ -58,5 +66,5 @@ export default function OrderFilter({
         </div>
       </div>
     </div>
-  )
+  );
 }
