@@ -1,5 +1,6 @@
 "use client"
 
+import OrderFilter from "@/components/order-filter";
 import OrderNew from "@/components/order-new";
 import OrderTable from "@/components/order-table";
 import { Order, StateEnum } from "@/types/order";
@@ -32,6 +33,15 @@ export default function Home() {
       updatedAt: new Date()
     }
   ])
+  const [filterControlNumber, setFilterControlNumber] = useState("")
+  const [filterState, setFilterState] = useState<StateEnum | "all">("all")
+
+  const filteredOrders = orders.filter((order) => {
+    const matchesControlNumber =
+      filterControlNumber === "" || order.name.toLowerCase().includes(filterControlNumber.toLowerCase())
+    const matchesState = filterState === "all" || order.state == filterState
+    return matchesControlNumber && matchesState
+  })
 
   const handleAddOrder = async (name: string) => {
     const newOrder: Order = {
@@ -69,8 +79,15 @@ export default function Home() {
         loading={false}
         onAddOrder={handleAddOrder}
       />
+      <OrderFilter
+        filterState={filterState}
+        filterControlNumber={filterControlNumber}
+        loading={false}
+        onFilterStateChange={setFilterState}
+        onFilterControlNumberChange={setFilterControlNumber}
+      />
       <OrderTable 
-          orders={orders} 
+          orders={filteredOrders} 
           loading={false}
           onUpdateOrderState={handleUpdateOrderState}
         />
