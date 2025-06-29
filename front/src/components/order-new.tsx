@@ -44,7 +44,7 @@ export default function OrderNew({ loading, onAddOrder }: OrderNewProps) {
             onChange={(e) => setNewControlNumber(e.target.value)}
             onKeyUp={handleKeyUp}
             disabled={loading}
-            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+            className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
           />
         </div>
         <button
