@@ -1,6 +1,6 @@
 "use client"
 
-import { Play, CheckCircle, Package } from "lucide-react"
+import { Play, CheckCircle, Package, Check } from "lucide-react"
 import { Order, StateEnum } from "@/types/order"
 import { formatDateToBR } from "@/lib/date-utils"
 
@@ -76,58 +76,60 @@ export default function OrderTable({ orders, loading, onUpdateOrderState }: Orde
                 key={order.id}
                 className={`p-6 ${index !== orders.length - 1 ? "border-b border-slate-200" : ""} hover:bg-slate-50 transition-colors`}
               >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className="flex-shrink-0">
+                <div className="flex flex-col gap-4 sm:gap-1">
+                  <h4 className="text-lg font-semibold text-slate-900">{order.name}</h4>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-4">
                       <div className={`w-3 h-3 rounded-full ${styles.dot}`}></div>
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-semibold text-slate-900">{order.name}</h4>
-                      <div className="flex items-center space-x-4 mt-1">
-                        <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${styles.badge}`}
-                        >
-                          {order.stateName}
-                        </span>
-                        {order.createdAt && (
-                          <span className="text-sm text-slate-500">Created: {`${formatDateToBR(order.createdAt.toISOString())}`}</span>
-                        )}
-                        {order.updatedAt && (
-                          <span className="text-sm text-slate-500">Updated: {`${formatDateToBR(order.updatedAt.toISOString())}`}</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center space-x-3">
-                    {canStartProgress(order) && (
-                      <button
-                        onClick={() => onUpdateOrderState(order.id)}
-                        className="inline-flex items-center px-4 py-2 border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg text-sm font-medium transition-colors"
+                      <span
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${styles.badge}`}
                       >
-                        <Play className="w-4 h-4 mr-2" />
-                        Start Progress
-                      </button>
-                    )}
-                    {canComplete(order) && (
-                      <button
-                        onClick={() => onUpdateOrderState(order.id)}
-                        className="inline-flex items-center px-4 py-2 border border-emerald-300 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg text-sm font-medium transition-colors"
-                      >
-                        <CheckCircle className="w-4 h-4 mr-2" />
-                        Complete
-                      </button>
-                    )}
-                    {order.state === StateEnum.completed && (
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
-                        ✓ Completed
+                        {order.stateName}
                       </span>
-                    )}
+                      {order.createdAt && (
+                        <span className="text-sm text-slate-500">
+                          Created: {formatDateToBR(order.createdAt.toISOString())}
+                        </span>
+                      )}
+                      {order.updatedAt && (
+                        <span className="text-sm text-slate-500">
+                          Updated: {formatDateToBR(order.updatedAt.toISOString())}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2 sm:justify-end">
+                      {canStartProgress(order) && (
+                        <button
+                          onClick={() => onUpdateOrderState(order.id)}
+                          className="inline-flex items-center px-4 py-2 border border-blue-300 text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg text-sm font-medium transition-colors"
+                        >
+                          <Play className="w-4 h-4 mr-2" />
+                          Start Progress
+                        </button>
+                      )}
+                      {canComplete(order) && (
+                        <button
+                          onClick={() => onUpdateOrderState(order.id)}
+                          className="inline-flex items-center px-4 py-2 border border-emerald-300 text-emerald-700 bg-emerald-50 hover:bg-emerald-100 rounded-lg text-sm font-medium transition-colors"
+                        >
+                          <CheckCircle className="w-4 h-4 mr-2" />
+                          Complete
+                        </button>
+                      )}
+                      {order.state === StateEnum.completed && (
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-200">
+                          <Check className="w-4 h-4 mr-2" />
+                          Completed
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             )
           })}
+
         </div>
       )}
     </div>
