@@ -2,6 +2,7 @@
 
 import OrderFilter from "@/components/order-filter";
 import OrderNew from "@/components/order-new";
+import OrderStats from "@/components/order-stats";
 import OrderTable from "@/components/order-table";
 import { Order, StateEnum } from "@/types/order";
 import { useState } from "react";
@@ -75,6 +76,10 @@ export default function Home() {
   
   return (
     <div>
+      <OrderStats
+        loading={false}
+        orders={filteredOrders}
+      />
       <OrderNew
         loading={false}
         onAddOrder={handleAddOrder}
@@ -87,7 +92,7 @@ export default function Home() {
         onFilterControlNumberChange={setFilterControlNumber}
       />
       <OrderTable 
-          orders={filteredOrders} 
+          orders={filteredOrders}
           loading={false}
           onUpdateOrderState={handleUpdateOrderState}
         />
