@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Order, OrderFormData, StateEnum } from "@/types/order";
+import { API_CONFIG, apiCall } from "@/lib/api";
 
 export function useOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -15,33 +16,9 @@ export function useOrders() {
     setError(null);
 
     try {
-      const data = [
-        {
-          id: 1,
-          name: "ORD-001",
-          state: StateEnum.pending,
-          stateName: "Pending",
-          createdAt: new Date(),
-          updatedAt: undefined,
-        },
-        {
-          id: 2,
-          name: "ORD-002",
-          state: StateEnum.inProgress,
-          stateName: "In Progress",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: 3,
-          name: "ORD-003",
-          state: StateEnum.completed,
-          stateName: "Completed",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
-      setOrders(data || []);
+      const orders = await apiCall<Order[]>(API_CONFIG.ENDPOINTS.ORDER);
+
+      setOrders(orders || []);
     } catch (err) {
       const errorMessage = "Error loading orders";
       setError(errorMessage);
@@ -55,14 +32,11 @@ export function useOrders() {
     setError(null);
 
     try {
-      const newOrder: Order = {
-        id: Math.max(...orders.map((order) => order.id)) + 1,
-        name: order.name,
-        state: StateEnum.pending,
-        stateName: "Pending",
-        createdAt: new Date(),
-        updatedAt: undefined,
-      };
+      const newOrder = await apiCall<Order>(API_CONFIG.ENDPOINTS.ORDER, {
+        method: "POST",
+        body: JSON.stringify(order)
+      });
+
       if (newOrder) {
         setOrders((prev) => [...prev, newOrder]);
       }
@@ -82,29 +56,15 @@ export function useOrders() {
     setError(null);
 
     try {
-      setOrders((prev) =>
-        prev.map((order) => {
-          if (order.id === orderId) {
-            if (order.state === StateEnum.pending) {
-              return {
-                ...order,
-                state: StateEnum.inProgress,
-                stateName: "In Progress",
-                updatedAt: new Date(),
-              };
-            } else if (order.state === StateEnum.inProgress) {
-              return {
-                ...order,
-                state: StateEnum.completed,
-                stateName: "Completed",
-                updatedAt: new Date(),
-              };
-            }
-            return order;
-          }
-          return order;
-        })
-      );
+      const updatedOrder = await apiCall<Order>(`${API_CONFIG.ENDPOINTS.ORDER}/${orderId}`, {
+        method: "PATCH"
+      });
+
+      if (updatedOrder) {
+        setOrders((prev) =>
+          prev.map((order) => (order.id === orderId ? updatedOrder : order))
+        );
+      }
 
       return { success: true };
     } catch (err) {
