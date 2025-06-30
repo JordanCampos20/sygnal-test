@@ -1,14 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Order, OrderFormData, StateEnum } from "@/types/order";
+import { Order, StateEnum } from "@/types/order";
 import { API_CONFIG, apiCall } from "@/lib/api";
 
 export function useOrders() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [filterControlNumber, setFilterControlNumber] = useState("");
+  const [filterControlNumber, setFilterControlNumber] = useState<string>("");
   const [filterState, setFilterState] = useState<StateEnum | "all">("all");
 
   const fetchOrders = async () => {
@@ -27,14 +27,13 @@ export function useOrders() {
     }
   };
 
-  const createOrder = async (order: OrderFormData) => {
+  const createOrder = async () => {
     setLoading(true);
     setError(null);
 
     try {
       const newOrder = await apiCall<Order>(API_CONFIG.ENDPOINTS.ORDER, {
-        method: "POST",
-        body: JSON.stringify(order)
+        method: "POST"
       });
 
       if (newOrder) {
@@ -79,7 +78,7 @@ export function useOrders() {
   const filteredOrders = orders.filter((order) => {
     const matchesControlNumber =
       filterControlNumber === "" ||
-      order.name.toLowerCase().includes(filterControlNumber.toLowerCase());
+      order.id == Number(filterControlNumber);
     const matchesState = filterState === "all" || order.state == filterState;
     return matchesControlNumber && matchesState;
   });

@@ -6,13 +6,8 @@ export enum StateEnum {
 
 export interface Order {
   id: number;
-  name: string;
   state: StateEnum;
   stateName: string;
   createdAt: Date;
   updatedAt?: Date;
-}
-
-export interface OrderFormData {
-  name: string;
 }

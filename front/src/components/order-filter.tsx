@@ -34,7 +34,8 @@ export default function OrderFilter({
           </label>
           <input
             id="filterControl"
-            type="text"
+            type="number"
+            inputMode="numeric"
             placeholder="Search control number..."
             value={filterControlNumber}
             onChange={(e) => onFilterControlNumberChange(e.target.value)}

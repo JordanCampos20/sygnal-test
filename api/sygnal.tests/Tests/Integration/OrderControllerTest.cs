@@ -2,7 +2,6 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using sygnal.DTOs;
 using sygnal.Enums;
 using sygnal.ViewModels;
 
@@ -34,7 +33,6 @@ namespace sygnal.tests.Tests.Integration
 
             Assert.NotNull(firstOrder);
             Assert.Equal(1, firstOrder.Id);
-            Assert.Equal("ORD-TEST-001", firstOrder.Name);
             Assert.Equal(StateEnum.Pending, firstOrder.State);
         }
 
@@ -51,7 +49,6 @@ namespace sygnal.tests.Tests.Integration
 
             Assert.NotNull(json);
             Assert.Equal(2, json.Id);
-            Assert.Equal("ORD-TEST-002", json.Name);
             Assert.Equal(StateEnum.Completed, json.State);
         }
 
@@ -66,16 +63,7 @@ namespace sygnal.tests.Tests.Integration
         [Fact]
         public async Task PostOrder_ReturnsSuccessAndOrder()
         {
-            var newOrder = new OrderDTO
-            {
-                Name = "ORD-TEST-006"
-            };
-
-            var jsonContent = new StringContent(
-                JsonSerializer.Serialize(newOrder),
-                Encoding.UTF8, "application/json");
-
-            var response = await _client.PostAsync("/api/v1/order", jsonContent);
+            var response = await _client.PostAsync("/api/v1/order", null);
 
             response.EnsureSuccessStatusCode();
 
@@ -85,24 +73,7 @@ namespace sygnal.tests.Tests.Integration
 
             Assert.NotNull(json);
             Assert.Equal(6, json.Id);
-            Assert.Equal("ORD-TEST-006", json.Name);
             Assert.Equal(StateEnum.Pending, json.State);
-        }
-
-        [Fact]
-        public async Task PostOrder_WhenOrderIsInvalid_ReturnsBadRequest()
-        {
-            var invalidOrder = new { };
-
-            var json = JsonSerializer.Serialize(invalidOrder);
-
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            // Act
-            var response = await _client.PostAsync("/api/v1/order", content);
-
-            // Assert
-            Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]
@@ -118,7 +89,6 @@ namespace sygnal.tests.Tests.Integration
 
             Assert.NotNull(json);
             Assert.Equal(3, json.Id);
-            Assert.Equal("ORD-TEST-003", json.Name);
             Assert.Equal(StateEnum.InProgress, json.State);
         }
 

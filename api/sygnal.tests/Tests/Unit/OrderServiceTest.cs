@@ -26,7 +26,6 @@ namespace sygnal.tests.Tests.Unit
 
             Assert.NotNull(order);
             Assert.Equal(1, order.Id);
-            Assert.Equal("ORD-TEST-001", order.Name);
             Assert.Equal(StateEnum.Pending, order.State);
         }
 
@@ -43,7 +42,6 @@ namespace sygnal.tests.Tests.Unit
 
             Assert.NotNull(order);
             Assert.Equal(1, order.Id);
-            Assert.Equal("ORD-TEST-001", order.Name);
             Assert.Equal(StateEnum.Pending, order.State);
         }
 
@@ -68,7 +66,6 @@ namespace sygnal.tests.Tests.Unit
             var newOrder = new Order()
             {
                 Id = 6,
-                Name = "ORD-TEST-006",
                 State = StateEnum.Pending
             };
 
@@ -91,7 +88,6 @@ namespace sygnal.tests.Tests.Unit
 
             Assert.NotNull(order);
             Assert.Equal(6, order.Id);
-            Assert.Equal("ORD-TEST-006", order.Name);
             Assert.Equal(StateEnum.Pending, order.State);
         }
 
@@ -118,7 +114,6 @@ namespace sygnal.tests.Tests.Unit
 
             Assert.NotNull(order);
             Assert.Equal(5, order.Id);
-            Assert.Equal("ORD-TEST-005", order.Name);
             Assert.Equal(StateEnum.Completed, order.State);
         }
     }
