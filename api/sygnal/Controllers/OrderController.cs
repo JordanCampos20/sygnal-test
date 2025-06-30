@@ -51,6 +51,11 @@ public class OrderController(IOrderService orderService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> PostOrderAsync([FromBody] OrderDTO orderDTO)
     {
+        if (string.IsNullOrEmpty(orderDTO.Name))
+        {
+            return BadRequest("Invalid data");
+        }
+
         Order order = new()
         {
             Name = orderDTO.Name,
@@ -73,17 +78,19 @@ public class OrderController(IOrderService orderService) : ControllerBase
             return NotFound("Order not found");
         }
 
-        if (order.State != StateEnum.Completed)
+        if (order.State == StateEnum.Completed)
         {
-            order.UpdatedAt = DateTime.UtcNow;
-
-            if (order.State == StateEnum.Pending)
-                order.State = StateEnum.InProgress;
-            else if (order.State == StateEnum.InProgress)
-                order.State = StateEnum.Completed;
-
-            await _orderService.UpdateAsync(order);
+            return Conflict("Order is complete");
         }
+
+        order.UpdatedAt = DateTime.UtcNow;
+
+        if (order.State == StateEnum.Pending)
+            order.State = StateEnum.InProgress;
+        else if (order.State == StateEnum.InProgress)
+            order.State = StateEnum.Completed;
+
+        await _orderService.UpdateAsync(order);
 
         return CreatedAtRoute("GetOrder", new { orderId = order.Id }, new OrderViewModel(order));
     }
