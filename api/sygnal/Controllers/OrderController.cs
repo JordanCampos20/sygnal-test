@@ -1,7 +1,6 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using sygnal.DTOs;
 using sygnal.Entities;
 using sygnal.Enums;
 using sygnal.Interfaces.Services;
@@ -49,16 +48,10 @@ public class OrderController(IOrderService orderService) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> PostOrderAsync([FromBody] OrderDTO orderDTO)
+    public async Task<IActionResult> PostOrderAsync()
     {
-        if (string.IsNullOrEmpty(orderDTO.Name))
-        {
-            return BadRequest("Invalid data");
-        }
-
         Order order = new()
         {
-            Name = orderDTO.Name,
             State = StateEnum.Pending,
             CreatedAt = DateTime.UtcNow
         };
