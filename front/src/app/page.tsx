@@ -19,8 +19,8 @@ export default function Home() {
     setFilterState,
   } = useOrders();
 
-  const handleAddOrder = async (name: string) => {
-    await createOrder({ name });
+  const handleAddOrder = async () => {
+    await createOrder();
   };
 
   const handleUpdateOrderState = async (orderId: number) => {
