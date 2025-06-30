@@ -7,7 +7,7 @@ app = 'sygnalgroupapi'
 primary_region = 'gru'
 
 [build]
-  dockerfile = 'sygnal\Dockerfile'
+  dockerfile = 'sygnal/Dockerfile'
 
 [http_service]
   internal_port = 8080
