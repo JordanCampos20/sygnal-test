@@ -86,7 +86,7 @@ export default function OrderTable({
               >
                 <div className="flex flex-col gap-4 sm:gap-1">
                   <h4 className="text-lg font-semibold text-slate-900">
-                    {order.name}
+                    {order.id}
                   </h4>
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
                     <div className="flex flex-wrap items-center gap-4">
