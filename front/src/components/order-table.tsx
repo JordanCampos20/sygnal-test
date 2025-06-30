@@ -101,13 +101,13 @@ export default function OrderTable({
                       {order.createdAt && (
                         <span className="text-sm text-slate-500">
                           Created:{" "}
-                          {formatDateToBR(order.createdAt.toISOString())}
+                          {formatDateToBR(order.createdAt.toString())}
                         </span>
                       )}
                       {order.updatedAt && (
                         <span className="text-sm text-slate-500">
                           Updated:{" "}
-                          {formatDateToBR(order.updatedAt.toISOString())}
+                          {formatDateToBR(order.updatedAt.toString())}
                         </span>
                       )}
                     </div>
