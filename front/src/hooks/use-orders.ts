@@ -19,7 +19,7 @@ export function useOrders() {
       const orders = await apiCall<Order[]>(API_CONFIG.ENDPOINTS.ORDER);
 
       setOrders(orders || []);
-    } catch (err) {
+    } catch {
       const errorMessage = "Error loading orders";
       setError(errorMessage);
     } finally {
@@ -42,7 +42,7 @@ export function useOrders() {
       }
 
       return { success: true };
-    } catch (err) {
+    } catch {
       const errorMessage = "Error creating order";
       setError(errorMessage);
       return { success: false, error: errorMessage };
@@ -67,7 +67,7 @@ export function useOrders() {
       }
 
       return { success: true };
-    } catch (err) {
+    } catch {
       const errorMessage = "Error updating order status";
       setError(errorMessage);
       return { success: false, error: errorMessage };
