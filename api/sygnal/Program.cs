@@ -16,6 +16,16 @@ builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddCors(options =>
+{
+  options
+  .AddPolicy(ConfigUtil.CorsName,
+    corsPolicyBuilder => corsPolicyBuilder
+      .WithOrigins("http://localhost:3000", ConfigUtil.CorsUrl)
+      .AllowAnyHeader()
+      .AllowAnyMethod());
+});
+
 builder.Services
             .AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(ConfigUtil.DatabaseConnection));
@@ -75,6 +85,8 @@ if (app.Environment.IsDevelopment())
     options.AddDocuments(versions);
   });
 }
+
+app.UseCors(ConfigUtil.CorsName);
 
 app.UseHttpsRedirection();
 

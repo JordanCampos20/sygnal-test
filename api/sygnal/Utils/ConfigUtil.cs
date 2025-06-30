@@ -10,4 +10,20 @@ public static class ConfigUtil
                 ?? Environment.GetEnvironmentVariable("DATABASE_sygnal");
         }
     }
+
+    public static string CorsName
+    {
+        get
+        {
+            return "SygnalCors";
+        }
+    }
+
+    public static string CorsUrl
+    {
+        get
+        {
+            return "https://sygnal.jasmim.dev";
+        }
+    }
 }
