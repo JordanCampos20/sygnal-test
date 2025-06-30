@@ -4,6 +4,10 @@ using sygnal.Interfaces.Repositories;
 using sygnal.Interfaces.Services;
 using sygnal.Repositories;
 using sygnal.Services;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Asp.Versioning.ApiExplorer;
+using Scalar.AspNetCore;
+using Asp.Versioning;
 using sygnal.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,11 +23,57 @@ builder.Services
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 
+builder.Services
+.AddApiVersioning(options =>
+{
+  options.DefaultApiVersion = new ApiVersion(1, 0);
+  options.ReportApiVersions = true;
+  options.RouteConstraintName = "version";
+  options.UnsupportedApiVersionStatusCode = 400;
+})
+.AddApiExplorer(options =>
+{
+  options.GroupNameFormat = "'v'VVV";
+  options.SubstituteApiVersionInUrl = true;
+});
+
+string[] versions = ["v1"];
+
+foreach (var version in versions)
+{
+  builder.Services.AddOpenApi(version, options =>
+  {
+    options.AddDocumentTransformer((document, context, _) =>
+    {
+      var descriptionProvider = context.ApplicationServices.GetRequiredService<IApiVersionDescriptionProvider>();
+      var versionDescription = descriptionProvider.ApiVersionDescriptions.FirstOrDefault(x => x.GroupName == version);
+      document.Info.Version = versionDescription?.ApiVersion.ToString();
+      return Task.CompletedTask;
+    });
+
+    options.AddOperationTransformer((operation, context, _) =>
+    {
+      var apiDescription = context.Description;
+      operation.Deprecated = apiDescription.IsDeprecated();
+      return Task.CompletedTask;
+    });
+  });
+}
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+  app.MapOpenApi();
+  app.MapScalarApiReference(options =>
+  {
+    options.WithTitle("SygnalGroup")
+          .WithTheme(ScalarTheme.Saturn)
+          .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient)
+          .WithDarkModeToggle(true);
+
+    options.AddDocuments(versions);
+  });
 }
 
 app.UseHttpsRedirection();
